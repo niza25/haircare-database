@@ -10,15 +10,22 @@ export default class extends Component {
   };
 
   getTippsByCategory = () => {
+// create an object with cat, so they dont disappear
+const initCategories = categories.reduce((categories, category)=>({
+...categories,
+[category]: []
+}), {})
+
+console.log(initCategories, categories, 'init')
+
     return Object.entries(
       this.state.careTipps.reduce((careTipps, careTipp) => {
         const { category } = careTipp;
-        careTipps[category] = careTipps[category]
-          ? [...careTipps[category], careTipp]
-          : [careTipp];
+        careTipps[category] = [...careTipps[category], careTipp]
 
         return careTipps;
-      }, {})
+        // initCategories so the cat stay even if all tipps deleted
+      }, initCategories)
     );
   };
 
