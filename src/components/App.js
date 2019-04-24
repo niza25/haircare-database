@@ -40,6 +40,13 @@ export default class extends Component {
     }));
   };
 
+  handleCareTippDelete = id => {
+    // previous state careTipps extracted
+    this.setState(({ careTipps }) => ({
+      careTipps: careTipps.filter(tipp => tipp.id !== id)
+    }));
+  };
+
   render() {
     const careTipps = this.getTippsByCategory(),
       { activeCategory, selectedTipp } = this.state;
@@ -54,6 +61,7 @@ export default class extends Component {
           activeCategory={activeCategory}
           selectedTipp={selectedTipp}
           onSelect={this.handleTitleSelect}
+          onDelete={this.handleCareTippDelete}
         />
         <Footer
           activeCategory={activeCategory}
