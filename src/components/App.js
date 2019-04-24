@@ -10,15 +10,22 @@ export default class extends Component {
   };
 
   getTippsByCategory = () => {
+// create an object with cat, so they dont disappear
+const initCategories = categories.reduce((categories, category)=>({
+...categories,
+[category]: []
+}), {})
+
+console.log(initCategories, categories, 'init')
+
     return Object.entries(
       this.state.careTipps.reduce((careTipps, careTipp) => {
         const { category } = careTipp;
-        careTipps[category] = careTipps[category]
-          ? [...careTipps[category], careTipp]
-          : [careTipp];
+        careTipps[category] = [...careTipps[category], careTipp]
 
         return careTipps;
-      }, {})
+        // initCategories so the cat stay even if all tipps deleted
+      }, initCategories)
     );
   };
 
@@ -40,6 +47,13 @@ export default class extends Component {
     }));
   };
 
+  handleCareTippDelete = id => {
+    // previous state careTipps extracted
+    this.setState(({ careTipps }) => ({
+      careTipps: careTipps.filter(tipp => tipp.id !== id)
+    }));
+  };
+
   render() {
     const careTipps = this.getTippsByCategory(),
       { activeCategory, selectedTipp } = this.state;
@@ -54,6 +68,7 @@ export default class extends Component {
           activeCategory={activeCategory}
           selectedTipp={selectedTipp}
           onSelect={this.handleTitleSelect}
+          onDelete={this.handleCareTippDelete}
         />
         <Footer
           activeCategory={activeCategory}

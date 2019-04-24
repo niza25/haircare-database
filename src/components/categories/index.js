@@ -1,7 +1,15 @@
 import React, { Fragment } from "react";
-import { Grid, Paper, Typography, List } from "@material-ui/core";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import {
+  Grid,
+  Paper,
+  Typography,
+  List,
+  ListItemSecondaryAction,
+  ListItem,
+  ListItemText,
+  IconButton
+} from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = {
   Paper: {
@@ -21,10 +29,11 @@ export default ({
   onSelect,
   selectedTipp: {
     id,
-    // default values comment here
+    // default values
     title = "Welcome to the Hair-care guide!",
     description = "Take a look at the categories and select one to see the details."
-  }
+  },
+  onDelete
 }) => (
   <Grid container>
     <Grid item xs={12} sm={6}>
@@ -46,6 +55,11 @@ export default ({
                     <ListItemText
                       primary={title}
                     />
+                    <ListItemSecondaryAction>
+                    <IconButton onClick={()=> onDelete(id)}>
+                    <DeleteIcon />
+            </IconButton>
+                    </ListItemSecondaryAction>
                   </ListItem>
                 ))}
               </List>
