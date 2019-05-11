@@ -1,7 +1,15 @@
 import React, { Fragment } from "react";
-import { Grid, Paper, Typography, List } from "@material-ui/core";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import {
+  Grid,
+  Paper,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton
+} from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const styles = {
   Paper: {
@@ -24,7 +32,8 @@ export default ({
     // default values comment here
     title = "Welcome to the Hair-care guide!",
     description = "Take a look at the categories and select one to see the details."
-  }
+  },
+  onDelete
 }) => (
   <Grid container>
     <Grid item xs={12} sm={6}>
@@ -40,12 +49,13 @@ export default ({
               </Typography>
               <List component="ul">
                 {tipps.map(({ id, title }) => (
-                  <ListItem button
-                  onClick={() => onSelect(id)}
-                  key={id}>
-                    <ListItemText
-                      primary={title}
-                    />
+                  <ListItem button onClick={() => onSelect(id)} key={id}>
+                    <ListItemText primary={title} />
+                    <ListItemSecondaryAction>
+                      <IconButton onClick={()=>onDelete(id) }>
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
                   </ListItem>
                 ))}
               </List>
@@ -56,7 +66,9 @@ export default ({
     </Grid>
     <Grid item xs={12} sm={6}>
       <Paper style={styles.Paper}>
-        <Typography variant="display1" style={styles.RightPane}>{title}</Typography>
+        <Typography variant="display1" style={styles.RightPane}>
+          {title}
+        </Typography>
         <Typography variant="body" style={styles.RightPane}>
           {description}
         </Typography>

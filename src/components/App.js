@@ -10,15 +10,21 @@ export default class extends Component {
   };
 
   getTippsByCategory = () => {
+    const initialCategories = categories.reduce(
+      (categories, cat) => ({
+        ...categories,
+        [cat]: []
+      }),
+      {}
+    );
+
     return Object.entries(
       this.state.careTipps.reduce((careTipps, careTipp) => {
         const { category } = careTipp;
-        careTipps[category] = careTipps[category]
-          ? [...careTipps[category], careTipp]
-          : [careTipp];
+        careTipps[category] = [...careTipps[category], careTipp];
 
         return careTipps;
-      }, {})
+      }, initialCategories)
     );
   };
 
@@ -40,6 +46,12 @@ export default class extends Component {
     }));
   };
 
+  handleCareTippDelete = id => {
+    this.setState(({ careTipps }) => ({
+      careTipps: careTipps.filter(tipp => tipp.id !== id)
+    }));
+  };
+
   render() {
     const careTipps = this.getTippsByCategory(),
       { activeCategory, selectedTipp } = this.state;
@@ -54,6 +66,7 @@ export default class extends Component {
           activeCategory={activeCategory}
           selectedTipp={selectedTipp}
           onSelect={this.handleTitleSelect}
+          onDelete={this.handleCareTippDelete}
         />
         <Footer
           activeCategory={activeCategory}
