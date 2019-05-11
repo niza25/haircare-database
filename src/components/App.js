@@ -6,55 +6,68 @@ import { categories, careTipps } from "../store";
 export default class extends Component {
   state = {
     careTipps,
-    selectedTipp: {}
+    careTipp: {}
+    // if not declared, will be init undefined which is falsy
+    /* editMode: false */
   };
 
   getTippsByCategory = () => {
-    const initialCategories = categories.reduce(
-      (categories, cat) => ({
-        ...categories,
+    const initialCareTipps = categories.reduce(
+      (careTipps, cat) => ({
+        ...careTipps,
         [cat]: []
-      }),
-      {}
-    );
+      }), {})
 
     return Object.entries(
       this.state.careTipps.reduce((careTipps, careTipp) => {
-        const { category } = careTipp;
-        careTipps[category] = [...careTipps[category], careTipp];
+        const { category } = careTipp
+        
+        careTipps[category] = [...careTipps[category], careTipp]
 
-        return careTipps;
-      }, initialCategories)
+        return careTipps
+      }, initialCareTipps)
     );
   };
 
-  handleCategorySelect = activeCategory => {
+  handleCategorySelect = category =>
     this.setState({
-      activeCategory
+      category
     });
-  };
 
-  handleTitleSelect = id => {
+  handleCareTippSelect = id =>
     this.setState(({ careTipps }) => ({
-      selectedTipp: careTipps.find(tip => tip.id === id)
+      careTipp: careTipps.find(tip => tip.id === id),
+      editMode: false
     }));
-  };
 
-  handleCareTippCreate = careTipp => {
+  handleCareTippCreate = careTipp =>
     this.setState(({ careTipps }) => ({
       careTipps: [...careTipps, careTipp]
     }));
-  };
 
-  handleCareTippDelete = id => {
+  handleCareTippDelete = id =>
+    this.setState(({ careTipps, careTipp }) => ({
+      careTipps: careTipps.filter(tipp => tipp.id !== id),
+      editMode: false,
+      careTipp: careTipp.id === id ? {} : careTipp
+    }));
+
+  handleCareTippSelectEdit = id =>
     this.setState(({ careTipps }) => ({
-      careTipps: careTipps.filter(tipp => tipp.id !== id)
+      careTipp: careTipps.find(tip => tip.id === id),
+      editMode: true
+    }));
+
+  handleCareTippEdit = careTipp => {
+    this.setState(({ careTipps }) => ({
+      careTipps: [...careTipps.filter(tipp => tipp.id !== careTipp.id), careTipp], careTipp
     }));
   };
 
   render() {
     const careTipps = this.getTippsByCategory(),
-      { activeCategory, selectedTipp } = this.state;
+      { category, careTipp, editMode } = this.state;
+      console.log(careTipps)
     return (
       <Fragment>
         <Header
@@ -62,14 +75,18 @@ export default class extends Component {
           onCareTippCreate={this.handleCareTippCreate}
         />
         <Categories
+          careTipp={careTipp}
           careTipps={careTipps}
-          activeCategory={activeCategory}
-          selectedTipp={selectedTipp}
-          onSelect={this.handleTitleSelect}
+          categories={categories}
+          category={category}
+          onSelect={this.handleCareTippSelect}
           onDelete={this.handleCareTippDelete}
+          onSelectEdit={this.handleCareTippSelectEdit}
+          editMode={editMode}
+          onEdit={this.handleCareTippEdit}
         />
         <Footer
-          activeCategory={activeCategory}
+          category={category}
           categories={categories}
           onSelect={this.handleCategorySelect}
         />

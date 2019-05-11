@@ -1,6 +1,6 @@
 import React from 'react'
 import {AppBar, Toolbar, Typography} from '@material-ui/core';
-import CreateDialog from '../categories/dialogs/Create'
+import Dialog from '../categories/Dialog'
 
 export default ({categories, onCareTippCreate}) =>
 <AppBar position="static" color="secondary">
@@ -8,7 +8,7 @@ export default ({categories, onCareTippCreate}) =>
   <Typography variant="title" color="inherit" style={{flex: 1}}>
     Hair Care Database
   </Typography>
-  <CreateDialog
+  <Dialog
   categories={categories}
   onCreate={onCareTippCreate}
   />

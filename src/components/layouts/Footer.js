@@ -1,10 +1,10 @@
 import React from 'react'
 import {Paper, Tabs, Tab} from '@material-ui/core';
 
-export default ({categories, activeCategory, onSelect}) => {
+export default ({categories, category, onSelect}) => {
   
-  const index = activeCategory
-  ? categories.findIndex(cat => cat === activeCategory) +1
+  const index = category
+  ? categories.findIndex(cat => cat === category) +1
   :  0
 
   const onIndexSelect = (e, index) =>
